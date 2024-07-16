@@ -1,4 +1,19 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.EntityFrameworkCore;
+using todo_backend.Contexts;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// CORS ポリシーの設定
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
 // Add services to the container.
 
@@ -7,7 +22,27 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//// DbContext の登録
+builder.Services.AddDbContext<TodoDbContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MariaDbContext");
+    options.UseMySql(connectionString,
+        new MySqlServerVersion(new Version(10, 5, 25)),
+        mySqlOptions =>
+        {
+            mySqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        })
+    .EnableSensitiveDataLogging()
+    .EnableDetailedErrors();
+});
+
 var app = builder.Build();
+
+// CORS ポリシーの適用
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

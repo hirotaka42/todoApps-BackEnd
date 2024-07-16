@@ -9,6 +9,7 @@ namespace todo_backend.Contexts
     {
         public TodoDbContext(DbContextOptions<TodoDbContext> options) : base(options)
         {
+            Database.Migrate();
         }
 
         public DbSet<Todo> Todos { get; set; }

@@ -1,25 +1,25 @@
 services:
-  # bff:
-  #   image: todo-backend
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "5200:5200"
-  #   volumes:
-  #           - ./config:/app-config
-  #           - ./data:/app-data
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Development
-  #     - ASPNETCORE_URLS=http://+:5200
-  #   depends_on:
-  #           - mysql
-  #   restart: always
-  #   logging:
-  #       driver: json-file
-  #       options:
-  #           max-file: "1"
-  #           max-size: 10m
+  backend:
+    image: todo-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5200:5200"
+    volumes:
+            - ./config:/app-config
+            - ./data:/app-data
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5200
+    depends_on:
+            - mysql
+    restart: always
+    logging:
+        driver: json-file
+        options:
+            max-file: "1"
+            max-size: 10m
 
   adminer:
     image: adminer
