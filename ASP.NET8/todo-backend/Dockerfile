@@ -14,7 +14,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # 実行環境として公式の .NET ランタイム イメージを使用
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
 # 作業ディレクトリを設定
 WORKDIR /app
